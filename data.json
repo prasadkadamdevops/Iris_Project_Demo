@@ -1,0 +1,13 @@
+{
+    "columns": [
+        "SepalLengthCm",
+        "SepalWidthCm",
+        "PetalLengthCm",
+        "PetalWidthCm"
+    ],
+    "species": [
+        "setosa",
+        "versicolor",
+        "virginica"
+    ]
+}
