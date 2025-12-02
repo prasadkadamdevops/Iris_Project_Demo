@@ -1,11 +1,11 @@
 {
-    "columns": [
-        "SepalLengthCm",
-        "SepalWidthCm",
-        "PetalLengthCm",
-        "PetalWidthCm"
+    "feature_names": [
+        "sepal length (cm)",
+        "sepal width (cm)",
+        "petal length (cm)",
+        "petal width (cm)"
     ],
-    "species": [
+    "target_names": [
         "setosa",
         "versicolor",
         "virginica"

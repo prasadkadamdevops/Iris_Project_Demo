@@ -23,31 +23,44 @@ class Iris():
     def get_predict_species(self):
         self.load_model()
 
-        # Create test_array with the required features
-        test_array = np.array([self.SepalLengthCm, self.SepalWidthCm, self.PetalLengthCm, self.PetalWidthCm])
+        # Correct feature names from data.json
+        feature_names = [
+            "sepal length (cm)",
+            "sepal width (cm)",
+            "petal length (cm)",
+            "petal width (cm)"
+        ]
 
-        # Create DataFrame for prediction with the correct feature names
-        feature_names = ['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm', 'PetalWidthCm']
+        # Create test array
+        test_array = np.array([
+            self.SepalLengthCm,
+            self.SepalWidthCm,
+            self.PetalLengthCm,
+            self.PetalWidthCm
+        ])
+
+        # Create DataFrame with correct column names
         test_array_df = pd.DataFrame([test_array], columns=feature_names)
 
-        # Make prediction using the DataFrame
+        # Make prediction
         predicted_spec = self.model.predict(test_array_df)
 
-        # Mapping predictions to species
+        # Map prediction to species name
         species_mapping = {0: "setosa", 1: "versicolor", 2: "virginica"}
-        predicted_species = species_mapping.get(predicted_spec[0], "Unknown")
+        predicted_species = species_mapping.get(int(predicted_spec[0]), "Unknown")
 
         return predicted_species
-
 
 
 if __name__ == '__main__':
     print("Current Working Directory:", os.getcwd())
 
-    SepalLengthCm = 30.0
-    SepalWidthCm = 23
-    PetalLengthCm = 28.3
-    PetalWidthCm = 2
+    # Sample test values
+    SepalLengthCm = 5.1
+    SepalWidthCm = 3.5
+    PetalLengthCm = 1.4
+    PetalWidthCm = 0.2
 
     ir = Iris(SepalLengthCm, SepalWidthCm, PetalLengthCm, PetalWidthCm)
     print(ir.get_predict_species())
+
