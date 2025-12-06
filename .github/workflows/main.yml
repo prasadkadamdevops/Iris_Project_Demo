@@ -1,0 +1,40 @@
+
+name: CI-CD Docker to WSL
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build_push_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ---- Docker Build & Push ----
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker Image
+        run: docker build -t prasad/iris-flask-app:latest .
+
+      - name: Push Docker Image
+        run: docker push prasad/iris-flask-app:latest
+
+      # ---- Deploy to WSL ----
+      - name: Deploy on WSL via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASS }}
+          script: |
+            docker stop iris-app || true
+            docker rm iris-app || true
+            docker pull prasad/iris-flask-app:latest
+            docker run -d --name iris-app -p 5004:5004 prasad/iris-flask-app:latest
